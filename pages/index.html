@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OvosFresh - Ovos Frescos Direto da Granja</title>
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FFB800;
+            --secondary: #FF6B35;
+            --dark: #2C3E50;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --success: #28A745;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        /* ===== HEADER E NAVEGAÇÃO ===== */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            background: var(--primary);
+            color: var(--dark);
+            padding: 8px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== CONTAINER PRINCIPAL ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ===== HOME PAGE ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--dark);
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: var(--dark);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+        }
+
+        /* ===== PRODUTOS ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* ===== FORMULÁRIOS ===== */
+        .form-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ===== CARRINHO ===== */
+        .cart-items {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .cart-item-details h3 {
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-quantity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: var(--primary);
+            color: var(--dark);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-summary {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+            border-top: 2px solid #E0E0E0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* ===== HISTÓRIA ===== */
+        .history-section {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .history-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .history-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        /* ===== PAGAMENTO ===== */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .payment-option {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid #E0E0E0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: #FFF9E6;
+        }
+
+        .payment-option h3 {
+            margin: 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        .payment-icon {
+            font-size: 50px;
+        }
+
+        .payment-form {
+            display: none;
+            margin-top: 2rem;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .payment-form.active {
+            display: block;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .alert-error {
+            background: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+
+        /* ===== ENTREGA ===== */
+        .delivery-options {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .delivery-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .delivery-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .delivery-card ul {
+            list-style-position: inside;
+            line-height: 2;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-top">
+            🚚 Frete GRÁTIS para compras acima de R$ 100,00
+        </div>
+        <nav>
+            <a href="#" class="logo" onclick="navigateTo('home')">🥚 OvosFresh</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="navigateTo('home')">Início</a></li>
+                <li><a href="#" onclick="navigateTo('produtos')">Produtos</a></li>
+                <li><a href="#" onclick="navigateTo('historia')">Nossa História</a></li>
+                <li><a href="#" onclick="navigateTo('entrega')">Entrega</a></li>
+                <li><a href="#" onclick="navigateTo('como-comprar')">Como Comprar</a></li>
+            </ul>
+            <div class="nav-icons">
+                <button onclick="navigateTo('login')">👤</button>
+                <button onclick="navigateTo('carrinho')">
+                    🛒
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PÁGINA HOME -->
+    <div id="home" class="page active">
+        <div class="container">
+            <div class="hero">
+                <h1>🥚 Ovos Frescos da Granja</h1>
+                <p>Qualidade e frescor direto do produtor para sua mesa</p>
+                <button class="btn" onclick="navigateTo('produtos')">Ver Produtos</button>
+            </div>
+
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Nossos Destaques</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">🥚</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ovos Brancos - Dúzia</h3>
+                        <p class="product-description">Ovos frescos de galinhas criadas soltas</p>
+                        <div class="product-price">R$ 12,90</div>
+                        <button class="btn" onclick="navigateTo('produtos')">Ver Mais</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🥚</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ovos Caipiras - Dúzia</h3>
+                        <p class="product-description">Ovos de galinhas caipiras, gema laranja</p>
+                        <div class="product-price">R$ 18,90</div>
+                        <button class="btn" onclick="navigateTo('produtos')">Ver Mais</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🥚</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ovos Orgânicos - Dúzia</h3>
+                        <p class="product-description">100% orgânicos certificados</p>
+                        <div class="product-price">R$ 24,90</div>
+                        <button class="btn" onclick="navigateTo('produtos')">Ver Mais</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA PRODUTOS -->
+    <div id="produtos" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; font-size: 2.5rem;">Nossos Produtos</h1>
+            <div id="alert" class="alert"></div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </div>
+
+    <!-- PÁGINA HISTÓRIA -->
+    <div id="historia" class="page">
+        <div class="container">
+            <div class="history-section">
+                <h2>Nossa História</h2>
+                <p>
+                    A OvosFresh nasceu em 1985, quando o Sr. João Silva decidiu transformar a pequena granja da família em um negócio dedicado à produção de ovos de alta qualidade. Com apenas 50 galinhas e muito trabalho, ele começou a fornecer ovos para a vizinhança, conquistando clientes pela frescor e sabor incomparáveis.
+                </p>
+                <p>
+                    Ao longo dos anos, a empresa cresceu, mas nunca perdeu seus valores fundamentais: respeito aos animais, sustentabilidade e compromisso com a qualidade. Hoje, contamos com uma estrutura moderna que abriga mais de 10.000 galinhas criadas em ambiente controlado, com alimentação balanceada e cuidados veterinários constantes.
+                </p>
+                <p>
+                    Nossa missão é levar até sua casa ovos frescos, nutritivos e saborosos, mantendo o padrão de excelência que nos tornou referência no mercado. Cada ovo é cuidadosamente selecionado e inspecionado antes de chegar até você.
+                </p>
+                <p>
+                    Em 2020, demos um passo importante rumo à sustentabilidade ao implementar energia solar em nossa granja e iniciar um programa de reciclagem de resíduos orgânicos. Acreditamos que produzir alimentos de qualidade também significa cuidar do meio ambiente.
+                </p>
+                <p>
+                    Hoje, a OvosFresh é uma empresa familiar de terceira geração, com a mesma paixão e dedicação do primeiro dia. Agradecemos a confiança de nossos clientes que, ao longo dessas quatro décadas, escolhem nossos produtos para alimentar suas famílias.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA COMO COMPRAR -->
+    <div id="como-comprar" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; font-size: 2.5rem;">Como Comprar</h1>
+            <div class="delivery-options">
+                <div class="delivery-card">
+                    <h3>1️⃣ Escolha seus produtos</h3>
+                    <p>Navegue pelo nosso catálogo e adicione os produtos desejados ao carrinho. Você pode escolher entre diferentes tipos de ovos: brancos, caipiras, orgânicos e mais.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3>2️⃣ Revise seu pedido</h3>
+                    <p>Acesse o carrinho, verifique os itens selecionados, quantidades e o valor total. Você pode alterar as quantidades ou remover itens antes de finalizar.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3>3️⃣ Faça login ou cadastre-se</h3>
+                    <p>Para finalizar a compra, você precisa estar logado. Se ainda não tem cadastro, é rápido e fácil criar uma conta.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3>4️⃣ Informe o endereço de entrega</h3>
+                    <p>Preencha o endereço completo onde deseja receber seus ovos. Atendemos toda a região metropolitana.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3>5️⃣ Escolha a forma de pagamento</h3>
+                    <p>Aceitamos PIX, cartão de crédito e cartão de débito. Todas as transações são seguras e protegidas.</p>
+                </div>
+                <div class="delivery-card">
+                    <h3>6️⃣ Confirme e aguarde</h3>
+                    <p>Após confirmar o pagamento, você receberá um e-mail com os detalhes do pedido. Seus ovos serão entregues fresquinhos em até 24 horas!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA ENTREGA -->
+    <div id="entrega" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; font-size: 2.5rem;">Formas de Entrega</h1>
+            <div class="delivery-options">
+                <div class="delivery-card">
+                    <h3>🚚 Entrega Expressa (24h)</h3>
+                    <p><strong>Prazo:</strong> Até 24 horas úteis</p>
+                    <p><strong>Valor:</strong> R$ 12,00</p>
+                    <p><strong>Disponível para:</strong> Toda região metropolitana</p>
+                    <ul>
+                        <li>Entrega rápida e segura</li>
+                        <li>Rastreamento em tempo real</li>
+                        <li>Embalagem térmica especial</li>
+                    </ul>
+                </div>
+                <div class="delivery-card">
+                    <h3>📦 Entrega Econômica (48h)</h3>
+                    <p><strong>Prazo:</strong> Até 48 horas úteis</p>
+                    <p><strong>Valor:</strong> R$ 8,00</p>
+                    <p><strong>Disponível para:</strong> Capital e região</p>
+                    <ul>
+                        <li>Ótimo custo-benefício</li>
+                        <li>Produtos bem acondicionados</li>
+                        <li>Entrega garantida</li>
+                    </ul>
+                </div>
+                <div class="delivery-card">
+                    <h3>🎁 Entrega Grátis</h3>
+                    <p><strong>Prazo:</strong> Até 48 horas úteis</p>
+                    <p><strong>Valor:</strong> GRÁTIS</p>
+                    <p><strong>Disponível para:</strong> Compras acima de R$ 100,00</p>
+                    <ul>
+                        <li>Sem custo adicional</li>
+                        <li>Mesma qualidade de entrega</li>
+                        <li>Aproveite e compre mais!</li>
+                    </ul>
+                </div>
+                <div class="delivery-card">
+                    <h3>🏪 Retirada na Granja</h3>
+                    <p><strong>Prazo:</strong> A partir de 2 horas após o pedido</p>
+                    <p><strong>Valor:</strong> GRÁTIS</p>
+                    <p><strong>Horário:</strong> Segunda a Sábado, 8h às 18h</p>
+                    <ul>
+                        <li>Retire pessoalmente</li>
+                        <li>Conheça nossa estrutura</li>
+                        <li>Sem custo de frete</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="history-section" style="margin-top: 3rem;">
+                <h2>📍 Nossa Localização</h2>
+                <p><strong>Endereço:</strong> Rodovia Rural SP-340, Km 25, Zona Rural - Amparo/SP</p>
+                <p><strong>Telefone:</strong> (19) 3807-XXXX</p>
+                <p><strong>WhatsApp:</strong> (19) 99999-XXXX</p>
+                <p><strong>E-mail:</strong> contato@ovosfresh.com.br</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA LOGIN -->
+    <div id="login" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Entrar na Conta</h2>
+                <div id="loginAlert" class="alert"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem;">Entrar</button>
+                    <p style="text-align: center;">
+                        Não tem conta? <a href="#" onclick="navigateTo('registro')" style="color: var(--primary);">Cadastre-se aqui</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA REGISTRO -->
+    <div id="registro" class="page">
+        <div class="container">
+            <div class="form-container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Criar Conta</h2>
+                <div id="registerAlert" class="alert"></div>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Nome Completo</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">E-mail</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPhone">Telefone</label>
+                        <input type="tel" id="registerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Senha</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirmar Senha</label>
+                        <input type="password" id="registerConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; margin-bottom: 1rem;">Cadastrar</button>
+                    <p style="text-align: center;">
+                        Já tem conta? <a href="#" onclick="navigateTo('login')" style="color: var(--primary);">Faça login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA CARRINHO -->
+    <div id="carrinho" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; font-size: 2.5rem;">Meu Carrinho</h1>
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 2rem;">
+                <div class="cart-items" id="cartItems">
+                    <p style="text-align: center; color: #999;">Seu carrinho está vazio</p>
+                </div>
+                <div>
+                    <div class="cart-summary">
+                        <h3 style="margin-bottom: 1.5rem;">Resumo do Pedido</h3>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Frete:</span>
+                            <span id="shipping">R$ 12,00</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Total:</span>
+                            <span id="total">R$ 12,00</span>
+                        </div>
+                        <button class="btn" style="width: 100%; margin-top: 1rem;" onclick="checkout()">Finalizar Compra</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA PAGAMENTO -->
+    <div id="pagamento" class="page">
+        <div class="container">
+            <h1 style="margin-bottom: 2rem; font-size: 2.5rem;">Forma de Pagamento</h1>
+            <div id="paymentAlert" class="alert"></div>
+            
+            <div class="payment-methods">
+                <div class="payment-option" onclick="selectPayment('debito')">
+                    <div class="payment-icon">💳</div>
+                    <h3>Cartão de Débito</h3>
+                    <p>Pagamento à vista</p>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO PIX -->
+            <div id="pixForm" class="payment-form">
+                <h2 style="margin-bottom: 1.5rem;">Pagamento via PIX</h2>
+                <p style="margin-bottom: 1.5rem;">Escaneie o QR Code abaixo ou copie o código PIX:</p>
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 200px; height: 200px; background: #f0f0f0; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 100px;">
+                        📱
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">QR Code do PIX</p>
+                </div>
+                <div class="form-group">
+                    <label>Código PIX</label>
+                    <input type="text" value="00020126580014BR.GOV.BCB.PIX0136..." readonly>
+                </div>
+                <button class="btn" style="width: 100%;" onclick="confirmPayment()">Confirmar Pagamento</button>
+            </div>
+
+            <!-- FORMULÁRIO CARTÃO DE CRÉDITO -->
+            <div id="creditoForm" class="payment-form">
+                <h2 style="margin-bottom: 1.5rem;">Cartão de Crédito</h2>
+                <form id="creditCardForm">
+                    <div class="form-group">
+                        <label for="cardNumber">Número do Cartão</label>
+                        <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardName">Nome no Cartão</label>
+                        <input type="text" id="cardName" placeholder="Como está no cartão" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="cardExpiry">Validade</label>
+                            <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCVV">CVV</label>
+                            <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardInstallments">Parcelas</label>
+                        <select id="cardInstallments" required>
+                            <option value="1">1x sem juros</option>
+                            <option value="2">2x sem juros</option>
+                            <option value="3">3x sem juros</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Finalizar Pagamento</button>
+                </form>
+            </div>
+
+            <!-- FORMULÁRIO CARTÃO DE DÉBITO -->
+            <div id="debitoForm" class="payment-form">
+                <h2 style="margin-bottom: 1.5rem;">Cartão de Débito</h2>
+                <form id="debitCardForm">
+                    <div class="form-group">
+                        <label for="debitCardNumber">Número do Cartão</label>
+                        <input type="text" id="debitCardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="debitCardName">Nome no Cartão</label>
+                        <input type="text" id="debitCardName" placeholder="Como está no cartão" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="debitCardExpiry">Validade</label>
+                            <input type="text" id="debitCardExpiry" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="debitCardCVV">CVV</label>
+                            <input type="text" id="debitCardCVV" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Finalizar Pagamento</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== DADOS DOS PRODUTOS =====
+        const products = [
+            {
+                id: 1,
+                name: 'Ovos Brancos - Dúzia',
+                description: 'Ovos frescos de galinhas criadas soltas, selecionados diariamente',
+                price: 12.90,
+                image: '🥚'
+            },
+            {
+                id: 2,
+                name: 'Ovos Vermelhos - Dúzia',
+                description: 'Ovos de casca vermelha, ricos em nutrientes',
+                price: 14.90,
+                image: '🥚'
+            },
+            {
+                id: 3,
+                name: 'Ovos Caipiras - Dúzia',
+                description: 'Ovos de galinhas caipiras, gema laranja intensa',
+                price: 18.90,
+                image: '🥚'
+            },
+            {
+                id: 4,
+                name: 'Ovos Orgânicos - Dúzia',
+                description: '100% orgânicos certificados, sem agrotóxicos',
+                price: 24.90,
+                image: '🥚'
+            },
+            {
+                id: 5,
+                name: 'Ovos Brancos - Bandeja 30un',
+                description: 'Embalagem econômica com 30 ovos brancos',
+                price: 29.90,
+                image: '🥚'
+            },
+            {
+                id: 6,
+                name: 'Ovos Caipiras - Bandeja 30un',
+                description: 'Embalagem econômica com 30 ovos caipiras',
+                price: 42.90,
+                image: '🥚'
+            },
+            {
+                id: 7,
+                name: 'Ovos de Codorna - Bandeja 12un',
+                description: 'Ovos de codorna frescos, perfeitos para receitas especiais',
+                price: 8.90,
+                image: '🥚'
+            },
+            {
+                id: 8,
+                name: 'Ovos Jumbo - Dúzia',
+                description: 'Ovos extra grandes, ideais para receitas',
+                price: 16.90,
+                image: '🥚'
+            }
+        ];
+
+        // ===== ESTADO DA APLICAÇÃO =====
+        let cart = [];
+        let currentUser = null;
+        let selectedPaymentMethod = null;
+
+        // ===== NAVEGAÇÃO =====
+        function navigateTo(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageName).classList.add('active');
+            
+            if (pageName === 'produtos') {
+                renderProducts();
+            } else if (pageName === 'carrinho') {
+                renderCart();
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        // ===== RENDERIZAR PRODUTOS =====
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.image}</div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">R$ ${product.price.toFixed(2)}</div>
+                        <div class="product-actions">
+                            <button class="btn" onclick="addToCart(${product.id})" style="width: 100%;">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== ADICIONAR AO CARRINHO =====
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCartBadge();
+            showAlert('alert', `${product.name} adicionado ao carrinho!`, 'success');
+        }
+
+        // ===== ATUALIZAR BADGE DO CARRINHO =====
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.textContent = totalItems;
+        }
+
+        // ===== RENDERIZAR CARRINHO =====
+        function renderCart() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align: center; color: #999; padding: 3rem;">Seu carrinho está vazio</p>';
+                updateCartSummary();
+                return;
+            }
+            
+            cartItemsDiv.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-image">${item.image}</div>
+                        <div class="cart-item-details">
+                            <h3>${item.name}</h3>
+                            <p style="color: #666;">R$ ${item.price.toFixed(2)} cada</p>
+                        </div>
+                    </div>
+                    <div class="cart-quantity">
+                        <button class="quantity-btn" onclick="decreaseQuantity(${item.id})">-</button>
+                        <span style="font-weight: bold; font-size: 1.1rem;">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="increaseQuantity(${item.id})">+</button>
+                    </div>
+                    <div style="text-align: right;">
+                        <p style="font-size: 1.3rem; font-weight: bold; color: var(--success);">
+                            R$ ${(item.price * item.quantity).toFixed(2)}
+                        </p>
+                        <button onclick="removeFromCart(${item.id})" style="background: none; border: none; color: var(--secondary); cursor: pointer; margin-top: 0.5rem;">
+                            🗑️ Remover
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateCartSummary();
+        }
+
+        // ===== AUMENTAR QUANTIDADE =====
+        function increaseQuantity(productId) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity++;
+                renderCart();
+                updateCartBadge();
+            }
+        }
+
+        // ===== DIMINUIR QUANTIDADE =====
+        function decreaseQuantity(productId) {
+            const item = cart.find(i => i.id === productId);
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                renderCart();
+                updateCartBadge();
+            }
+        }
+
+        // ===== REMOVER DO CARRINHO =====
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            renderCart();
+            updateCartBadge();
+        }
+
+        // ===== ATUALIZAR RESUMO DO CARRINHO =====
+        function updateCartSummary() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal >= 100 ? 0 : 12;
+            const total = subtotal + shipping;
+            
+            document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = shipping === 0 ? 'GRÁTIS' : `R$ ${shipping.toFixed(2)}`;
+            document.getElementById('total').textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        // ===== FINALIZAR COMPRA =====
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+                return;
+            }
+            
+            if (!currentUser) {
+                alert('Faça login para continuar com a compra');
+                navigateTo('login');
+                return;
+            }
+            
+            navigateTo('pagamento');
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simulação de login
+            const savedUser = JSON.parse(localStorage.getItem('user_' + email) || 'null');
+            
+            if (savedUser && savedUser.password === password) {
+                currentUser = savedUser;
+                showAlert('loginAlert', 'Login realizado com sucesso!', 'success');
+                setTimeout(() => {
+                    navigateTo('home');
+                }, 1500);
+            } else {
+                showAlert('loginAlert', 'E-mail ou senha incorretos!', 'error');
+            }
+        });
+
+        // ===== REGISTRO =====
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'As senhas não coincidem!', 'error');
+                return;
+            }
+            
+            const user = { name, email, phone, password };
+            localStorage.setItem('user_' + email, JSON.stringify(user));
+            
+            showAlert('registerAlert', 'Cadastro realizado com sucesso!', 'success');
+            setTimeout(() => {
+                navigateTo('login');
+            }, 1500);
+        });
+
+        // ===== SELEÇÃO DE PAGAMENTO =====
+        function selectPayment(method) {
+            selectedPaymentMethod = method;
+            
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.payment-option').classList.add('selected');
+            
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            if (method === 'pix') {
+                document.getElementById('pixForm').classList.add('active');
+            } else if (method === 'credito') {
+                document.getElementById('creditoForm').classList.add('active');
+            } else if (method === 'debito') {
+                document.getElementById('debitoForm').classList.add('active');
+            }
+        }
+
+        // ===== CONFIRMAR PAGAMENTO PIX =====
+        function confirmPayment() {
+            showAlert('paymentAlert', 'Aguardando confirmação do pagamento...', 'success');
+            setTimeout(() => {
+                showAlert('paymentAlert', 'Pagamento confirmado! Pedido realizado com sucesso!', 'success');
+                cart = [];
+                updateCartBadge();
+                setTimeout(() => {
+                    navigateTo('home');
+                }, 2000);
+            }, 2000);
+        }
+
+        // ===== PAGAMENTO CARTÃO DE CRÉDITO =====
+        document.getElementById('creditCardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showAlert('paymentAlert', 'Processando pagamento...', 'success');
+            setTimeout(() => {
+                showAlert('paymentAlert', 'Pagamento aprovado! Pedido realizado com sucesso!', 'success');
+                cart = [];
+                updateCartBadge();
+                setTimeout(() => {
+                    navigateTo('home');
+                }, 2000);
+            }, 2000);
+        });
+
+        // ===== PAGAMENTO CARTÃO DE DÉBITO =====
+        document.getElementById('debitCardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showAlert('paymentAlert', 'Processando pagamento...', 'success');
+            setTimeout(() => {
+                showAlert('paymentAlert', 'Pagamento aprovado! Pedido realizado com sucesso!', 'success');
+                cart = [];
+                updateCartBadge();
+                setTimeout(() => {
+                    navigateTo('home');
+                }, 2000);
+            }, 2000);
+        });
+
+        // ===== MOSTRAR ALERTA =====
+        function showAlert(alertId, message, type) {
+            const alert = document.getElementById(alertId);
+            alert.textContent = message;
+            alert.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== FORMATAÇÃO DE CARTÃO =====
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        document.getElementById('debitCardNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('debitCardExpiry')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // ===== INICIALIZAÇÃO =====
+        renderProducts();
+    </script>
+</body>
+</html>-option" onclick="selectPayment('pix')">
+                    <div class="payment-icon">💰</div>
+                    <h3>PIX</h3>
+                    <p>Pagamento instantâneo</p>
+                </div>
+                <div class="payment-option" onclick="selectPayment('credito')">
+                    <div class="payment-icon">💳</div>
+                    <h3>Cartão de Crédito</h3>
+                    <p>Parcelamento em até 3x</p>
+                </div>
+                <div class="payment
